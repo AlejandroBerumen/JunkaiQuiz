@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Pokémon</title>
+	<script type="text/javascript" src="scripts/mootools.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+   
+<div class="modal fade" id="myModalDos">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Fin!</h4>
+      </div>
+      <div class="modal-body" id="modalFin">
+      </div>
+    </div>
+  	</div>
+</div>
+
+
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Configuración</h4>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+      	
+    <form id="configuracion">
+	<h2>Generaciones:</h2>
+	<input type="checkbox" name="cbgen1" id="cbgen1" checked> <label>1ra</label>
+	<input type="checkbox" name="cbgen2" id="cbgen2" checked> <label>2da</label>
+	<input type="checkbox" name="cbgen3" id="cbgen3" checked> <label>3ra</label>
+	<input type="checkbox" name="cbgen4" id="cbgen4" checked> <label>4ta</label>
+	<input type="checkbox" name="cbgen5" id="cbgen5" checked> <label>5ta</label>
+	<br><br><h2>Modo:</h2>
+	<div class="btn btn-primary" id="btnSprite" onclick="seleccionModo('sprite')">Sprite</div>
+	<div class="btn btn-primary" id="btnSilueta" onclick="seleccionModo('silueta')">Silueta</div>
+	<br><br><h2>Cantidad:</h2>
+	<input type="radio" name="cantidad" value="10" checked id="radio10"> <label for="10">10</label>
+	<input type="radio" name="cantidad" value="20" id="radio20"> <label for="20">20</label>
+	<input type="radio" name="cantidad" value="35" id="radio35"> <label for="35">35</label>
+	<input type="radio" name="cantidad" value="50" id="radio50"> <label for="50">50</label>
+	<br><br><h2>Tiempo por respuesta:</h2>
+	<input type="radio" name="tiempo" value="6" checked id="radio6s"> <label for="6">6s</label>
+	<input type="radio" name="tiempo" value="12" id="radio12s"> <label for="12">12s</label>
+	<input type="radio" name="tiempo" value="18" id="radio18s"> <label for="18">18s</label>
+	<br><br><center><div class="btn btn-lg btn-success" onclick="iniciar()" data-bs-dismiss="modal">Iniciar!</div></center>
+	</form>
+
+      </div>
+    </div>
+  	</div>
+</div>
+
+<div class="container">
+	<div class="progress bg-primary my-5" id="progreso1" style="height: 26px;">
+		<div class="progress-bar"></div>
+	</div>
+	<center><div id="divPokemon"></div></center>
+	<center><div id="cajaRespuesta"><input type="text" name="txtRespuesta" id="txtRespuesta" onkeyup="comprobarRespuesta()"></div></center>
+	<center><div id="divNombres"></div></center>
+</div>
+
+<script type="text/javascript">
+	var nombresPokemon = ['Bulbasaur','Ivysaur','Venusaur','Charmander','Charmeleon','Charizard','Squirtle','Wartortle','Blastoise','Caterpie','Metapod','Butterfree','Weedle','Kakuna','Beedrill','Pidgey','Pidgeotto','Pidgeot','Rattata','Raticate','Spearow','Fearow','Ekans','Arbok','Pikachu','Raichu','Sandshrew','Sandslash','Nidoran♀','Nidorina','Nidoqueen','Nidoran♂','Nidorino','Nidoking','Clefairy','Clefable','Vulpix','Ninetales','Jigglypuff','Wigglytuff','Zubat','Golbat','Oddish','Gloom','Vileplume','Paras','Parasect','Venonat','Venomoth','Diglett','Dugtrio','Meowth','Persian','Psyduck','Golduck','Mankey','Primeape','Growlithe','Arcanine','Poliwag','Poliwhirl','Poliwrath','Abra','Kadabra','Alakazam','Machop','Machoke','Machamp','Bellsprout','Weepinbell','Victreebel','Tentacool','Tentacruel','Geodude','Graveler','Golem','Ponyta','Rapidash','Slowpoke','Slowbro','Magnemite','Magneton','Farfetch’d','Doduo','Dodrio','Seel','Dewgong','Grimer','Muk','Shellder','Cloyster','Gastly','Haunter','Gengar','Onix','Drowzee','Hypno','Krabby','Kingler','Voltorb','Electrode','Exeggcute','Exeggutor','Cubone','Marowak','Hitmonlee','Hitmonchan','Lickitung','Koffing','Weezing','Rhyhorn','Rhydon','Chansey','Tangela','Kangaskhan','Horsea','Seadra','Goldeen','Seaking','Staryu','Starmie','Mr. Mime','Scyther','Jynx','Electabuzz','Magmar','Pinsir','Tauros','Magikarp','Gyarados','Lapras','Ditto','Eevee','Vaporeon','Jolteon','Flareon','Porygon','Omanyte','Omastar','Kabuto','Kabutops','Aerodactyl','Snorlax','Articuno','Zapdos','Moltres','Dratini','Dragonair','Dragonite','Mewtwo','Mew','Chikorita','Bayleef','Meganium','Cyndaquil','Quilava','Typhlosion','Totodile','Croconaw','Feraligatr','Sentret','Furret','Hoothoot','Noctowl','Ledyba','Ledian','Spinarak','Ariados','Crobat','Chinchou','Lanturn','Pichu','Cleffa','Igglybuff','Togepi','Togetic','Natu','Xatu','Mareep','Flaaffy','Ampharos','Bellossom','Marill','Azumarill','Sudowoodo','Politoed','Hoppip','Skiploom','Jumpluff','Aipom','Sunkern','Sunflora','Yanma','Wooper','Quagsire','Espeon','Umbreon','Murkrow','Slowking','Misdreavus','Unown','Wobbuffet','Girafarig','Pineco','Forretress','Dunsparce','Gligar','Steelix','Snubbull','Granbull','Qwilfish','Scizor','Shuckle','Heracross','Sneasel','Teddiursa','Ursaring','Slugma','Magcargo','Swinub','Piloswine','Corsola','Remoraid','Octillery','Delibird','Mantine','Skarmory','Houndour','Houndoom','Kingdra','Phanpy','Donphan','Porygon2','Stantler','Smeargle','Tyrogue','Hitmontop','Smoochum','Elekid','Magby','Miltank','Blissey','Raikou','Entei','Suicune','Larvitar','Pupitar','Tyranitar','Lugia','Ho-Oh','Celebi','Treecko','Grovyle','Sceptile','Torchic','Combusken','Blaziken','Mudkip','Marshtomp','Swampert','Poochyena','Mightyena','Zigzagoon','Linoone','Wurmple','Silcoon','Beautifly','Cascoon','Dustox','Lotad','Lombre','Ludicolo','Seedot','Nuzleaf','Shiftry','Taillow','Swellow','Wingull','Pelipper','Ralts','Kirlia','Gardevoir','Surskit','Masquerain','Shroomish','Breloom','Slakoth','Vigoroth','Slaking','Nincada','Ninjask','Shedinja','Whismur','Loudred','Exploud','Makuhita','Hariyama','Azurill','Nosepass','Skitty','Delcatty','Sableye','Mawile','Aron','Lairon','Aggron','Meditite','Medicham','Electrike','Manectric','Plusle','Minun','Volbeat','Illumise','Roselia','Gulpin','Swalot','Carvanha','Sharpedo','Wailmer','Wailord','Numel','Camerupt','Torkoal','Spoink','Grumpig','Spinda','Trapinch','Vibrava','Flygon','Cacnea','Cacturne','Swablu','Altaria','Zangoose','Seviper','Lunatone','Solrock','Barboach','Whiscash','Corphish','Crawdaunt','Baltoy','Claydol','Lileep','Cradily','Anorith','Armaldo','Feebas','Milotic','Castform','Kecleon','Shuppet','Banette','Duskull','Dusclops','Tropius','Chimecho','Absol','Wynaut','Snorunt','Glalie','Spheal','Sealeo','Walrein','Clamperl','Huntail','Gorebyss','Relicanth','Luvdisc','Bagon','Shelgon','Salamence','Beldum','Metang','Metagross','Regirock','Regice','Registeel','Latias','Latios','Kyogre','Groudon','Rayquaza','Jirachi','Deoxys','Turtwig','Grotle','Torterra','Chimchar','Monferno','Infernape','Piplup','Prinplup','Empoleon','Starly','Staravia','Staraptor','Bidoof','Bibarel','Kricketot','Kricketune','Shinx','Luxio','Luxray','Budew','Roserade','Cranidos','Rampardos','Shieldon','Bastiodon','Burmy','Wormadam','Mothim','Combee','Vespiquen','Pachirisu','Buizel','Floatzel','Cherubi','Cherrim','Shellos','Gastrodon','Ambipom','Drifloon','Drifblim','Buneary','Lopunny','Mismagius','Honchkrow','Glameow','Purugly','Chingling','Stunky','Skuntank','Bronzor','Bronzong','Bonsly','Mime Jr.','Happiny','Chatot','Spiritomb','Gible','Gabite','Garchomp','Munchlax','Riolu','Lucario','Hippopotas','Hippowdon','Skorupi','Drapion','Croagunk','Toxicroak','Carnivine','Finneon','Lumineon','Mantyke','Snover','Abomasnow','Weavile','Magnezone','Lickilicky','Rhyperior','Tangrowth','Electivire','Magmortar','Togekiss','Yanmega','Leafeon','Glaceon','Gliscor','Mamoswine','Porygon-Z','Gallade','Probopass','Dusknoir','Froslass','Rotom','Uxie','Mesprit','Azelf','Dialga','Palkia','Heatran','Regigigas','Giratina','Cresselia','Phione','Manaphy','Darkrai','Shaymin','Arceus','Victini','Snivy','Servine','Serperior','Tepig','Pignite','Emboar','Oshawott','Dewott','Samurott','Patrat','Watchog','Lillipup','Herdier','Stoutland','Purrloin','Liepard','Pansage','Simisage','Pansear','Simisear','Panpour','Simipour','Munna','Musharna','Pidove','Tranquill','Unfezant','Blitzle','Zebstrika','Roggenrola','Boldore','Gigalith','Woobat','Swoobat','Drilbur','Excadrill','Audino','Timburr','Gurdurr','Conkeldurr','Tympole','Palpitoad','Seismitoad','Throh','Sawk','Sewaddle','Swadloon','Leavanny','Venipede','Whirlipede','Scolipede','Cottonee','Whimsicott','Petilil','Lilligant','Basculin','Sandile','Krokorok','Krookodile','Darumaka','Darmanitan','Maractus','Dwebble','Crustle','Scraggy','Scrafty','Sigilyph','Yamask','Cofagrigus','Tirtouga','Carracosta','Archen','Archeops','Trubbish','Garbodor','Zorua','Zoroark','Minccino','Cinccino','Gothita','Gothorita','Gothitelle','Solosis','Duosion','Reuniclus','Ducklett','Swanna','Vanillite','Vanillish','Vanilluxe','Deerling','Sawsbuck','Emolga','Karrablast','Escavalier','Foongus','Amoonguss','Frillish','Jellicent','Alomomola','Joltik','Galvantula','Ferroseed','Ferrothorn','Klink','Klang','Klinklang','Tynamo','Eelektrik','Eelektross','Elgyem','Beheeyem','Litwick','Lampent','Chandelure','Axew','Fraxure','Haxorus','Cubchoo','Beartic','Cryogonal','Shelmet','Accelgor','Stunfisk','Mienfoo','Mienshao','Druddigon','Golett','Golurk','Pawniard','Bisharp','Bouffalant','Rufflet','Braviary','Vullaby','Mandibuzz','Heatmor','Durant','Deino','Zweilous','Hydreigon','Larvesta','Volcarona','Cobalion','Terrakion','Virizion','Tornadus','Thundurus','Reshiram','Zekrom','Landorus','Kyurem','Keldeo','Meloetta','Genesect'];
+	var aciertos = 0;
+	var repeticiones = 0;
+	var cbgen1 = $('cbgen1');
+	var cbgen2 = $('cbgen2');
+	var cbgen3 = $('cbgen3');
+	var cbgen4 = $('cbgen4');
+	var cbgen5 = $('cbgen5');
+	var silueta = $('btnSilueta');
+	var barra = $('progreso1');
+	var radio6s = $('radio6s');
+	var radio12s = $('radio12s');
+	var radio18s = $('radio18s');
+	var radio10 = $('radio10');
+	var radio20 = $('radio20');
+	var radio35 = $('radio35');
+	var radio50 = $('radio50');
+	var modalFin = $('modalFin');
+	var txtRespuesta = $('txtRespuesta');
+	var divPokemon = $('divPokemon');
+	var pokeActual = 0;
+	var myModal = new bootstrap.Modal(document.getElementById('myModal'), {})
+	myModal.toggle()
+	var respuestaAnterior;
+	var pokeAnterior;
+
+	function iniciar(){
+		var ranmax, ranmin;
+
+		if(cbgen1.get('checked')){
+			ranmin = 0.5;
+		}else if(cbgen2.get('checked')){
+			ranmin = 151.5;
+		}else if(cbgen3.get('checked')){
+			ranmin = 251.5;
+		}else if(cbgen4.get('checked')){
+			ranmin = 386.5;
+		}else{
+			ranmin = 493.5;
+		}
+
+		if(cbgen5.get('checked')){
+			ranmax = 649.4;
+		}else if(cbgen4.get('checked')){
+			ranmax = 493.4;
+		}else if(cbgen3.get('checked')){
+			ranmax = 386.4;
+		}else if(cbgen2.get('checked')){
+			ranmax = 251.4;
+		}else{
+			ranmax = 151.4;
+		}
+
+		var bandera = true;
+		while(bandera){
+			var poke = obtener(ranmax, ranmin);
+			if(!cbgen1.get('checked') && (poke>=1 && poke<=151)){
+				continue;
+			}else if(!cbgen2.get('checked') && (poke>=152 && poke<=251)){
+				continue;
+			}else if(!cbgen3.get('checked') && (poke>=252 && poke<=386)){
+				continue;
+			}else if(!cbgen4.get('checked') && (poke>=387 && poke<=493)){
+				continue;
+			}else if(!cbgen5.get('checked') && (poke>=494)){
+				continue;
+			}else bandera = false;
+		}
+
+		var duracion;
+		if(radio6s.get('checked')) duracion = 6;
+		if(radio12s.get('checked')) duracion = 12;
+		if(radio18s.get('checked')) duracion = 18;
+
+		var finiter;
+		if(radio10.get('checked')) finiter = 10;
+		if(radio20.get('checked')) finiter = 20;
+		if(radio35.get('checked')) finiter = 35;
+		if(radio50.get('checked')) finiter = 50;
+
+		if(repeticiones>0 && !respuestaAnterior){
+			parpadearColor("incorrecto");
+			divNombres.style.animation = 'none';
+  			divNombres.offsetWidth; /* trigger reflow */
+  			divNombres.style.animation = null; 
+			divNombres.setStyle('animation-name', 'animNombre');
+			divNombres.setStyle('animation-duration', "1.3s");
+			divNombres.setStyle('animation-timing-function', "linear");
+			divNombres.set('HTML', '<center>'+pokeAnterior+'</center>');
+		}
+
+		txtRespuesta.setStyle("background-color", "white");
+
+		mostrar(poke, silueta.getStyle('opacity'), duracion, finiter);
+	}
+
+	function parpadearColor(res){
+		txtRespuesta.style.animation = 'none';
+  		txtRespuesta.offsetWidth; /* trigger reflow */
+  		txtRespuesta.style.animation = null;
+		if(res=="correcto"){
+			txtRespuesta.setStyle('animation-name', 'parpadeoCorrecto');	
+		}else{
+			txtRespuesta.setStyle('animation-name', 'parpadeoIncorrecto');
+		}
+		txtRespuesta.setStyle('animation-duration', "0.85s");
+		txtRespuesta.setStyle('animation-timing-function', "linear");
+	}
+
+	var again;
+
+	function comprobarRespuesta(){
+		var respuesta = nombresPokemon[(pokeActual-1)];
+		console.log("");
+		if(txtRespuesta.get('value').toLowerCase() == respuesta.toLowerCase()){
+			aciertos++;
+			respuestaAnterior = true;
+			parpadearColor("correcto");
+			clearTimeout(again);
+			iniciar();
+		}
+	}
+
+	function seleccionModo(seleccionado){
+		if(seleccionado=="silueta"){
+			document.getElementById("btnSilueta").style.opacity = "1";
+			document.getElementById("btnSprite").style.opacity = "0.35";
+		}else{
+			document.getElementById("btnSilueta").style.opacity = "0.35";
+			document.getElementById("btnSprite").style.opacity = "1";
+		}
+	}
+
+	function obtener(max, min){
+		var pokemon = Math.random() * (max - min) + min;
+		pokemon = Math.round(pokemon);
+		return pokemon;
+	}
+
+	function mostrar(pokemon, silueta, duracion, finiter){
+		respuestaAnterior = false;
+		pokeAnterior = nombresPokemon[(pokemon-1)];
+		txtRespuesta.set('value', "");
+		pokeActual = pokemon;
+		document.getElementById("divPokemon").innerHTML = "<img src='assets/img/pokemon/"+pokemon+".png' id='imgPokemon'>"/*+"--------"+nombresPokemon[(pokemon-1)]*/;
+		if(silueta=='1'){
+			document.getElementById("imgPokemon").style.filter = "brightness(0%)";
+		}
+
+		barra.style.animation = 'none';
+  		barra.offsetWidth; /* trigger reflow */
+  		barra.style.animation = null; 
+		barra.setStyle('animation-name', 'bajarBarra');
+		barra.setStyle('animation-duration', duracion+"s");
+		barra.setStyle('animation-timing-function', "linear");
+
+		if(repeticiones<finiter){
+			again = setTimeout(iniciar, duracion*1000);
+			repeticiones++;
+		}else{
+			//alert("FIN \n Obtuviste "+aciertos+" aciertos!");
+			barra.setStyle('opacity', '0');
+			divPokemon.setStyle('opacity', '0');
+			txtRespuesta.setStyle('opacity', '0');
+			var myModalDos = new bootstrap.Modal(document.getElementById('myModalDos'), {})
+			myModalDos.toggle();
+			modalFin.set('HTML', 'Obtuviste '+aciertos+"/"+finiter+' aciertos.<br><br><center><div class="btn btn-lg btn-success" onclick="reiniciar()" data-bs-dismiss="modal" style="margin: 14px;">Jugar de nuevo</div><div class="btn btn-lg btn-dark" onclick="" data-bs-dismiss="modal">Salir</div></center>');	
+		} 
+	}
+
+	function reiniciar(){
+		window.location.reload();
+	}
+</script>
+
+<style type="text/css">
+	body{
+		background-color: #F9FCD1;
+	}
+	@keyframes parpadeoCorrecto{
+		0%{
+			background-color: green;
+		}40%{
+			background-color: white;
+		}60%{
+			background-color: green;
+		}
+	}
+	@keyframes parpadeoIncorrecto{
+		0%{
+			background-color: red;
+		}40%{
+			background-color: white;
+		}60%{
+			background-color: red;
+		}
+	}
+	@keyframes bajarBarra{
+		from{
+			width: 100%;
+		}to{
+			width: 0%;
+		}
+	}
+	#configuracion{
+		margin: 15px;
+	}
+	#btnSilueta{
+		opacity: 0.35;
+	}
+	form input{
+		margin: 3px;
+	}
+	#imgPokemon{
+		margin-left: 50px;
+		width: 32%;
+		height: auto;
+	}
+	#txtRespuesta{
+		width: 64%;
+	}
+	#divNombres{
+		z-index: top;
+		font-size: 300%;
+		font-weight: bold;
+		margin-top:  -60%;
+		text-shadow: -3px 3px #DDD;
+	}
+	@keyframes animNombre{
+		0%{ margin-top:  -60%;	}
+		12%{ margin-top:  -5%;}
+		13%{ transform: rotate(7deg);}
+		32%{ transform: rotate(-14deg);}
+		70%{ transform: rotate(7deg);}
+		87%{ margin-top:  -7.5%;}
+		100%{ margin-top:  -60%;}
+	}
+</style>
+</body>
+</html>
